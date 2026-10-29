@@ -11,6 +11,7 @@ public class OrderForm {
 
     private WebDriver driver;
 
+    // Первая форма заказа
     // Поле "Имя"
     private final By nameInputLocator = By.xpath(".//input[@placeholder='* Имя']");
     // Поле "Фамилия"
@@ -21,32 +22,61 @@ public class OrderForm {
     private final By metroInputLocator = By.xpath(".//input[@placeholder='* Станция метро']");
     // Поле "Телефон"
     private final By phoneInputLocator = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
-
     // Кнопка "Далее"
     private final By nextBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+
+    // Вторая форма заказа
+    // Дата доставки
+    private final By deliveryDateInputLocator = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
+    // Поле срок аренды. Стрелка.
+    private final By leaseInputArrowLocator = By.xpath(".//div[@class='Dropdown-arrow-wrapper']");
+    // Поле срок аренды. Список значений.
+    private final By listLeasingDurations = By.xpath(".//div[@class='Dropdown-menu']");
+    // Цвет самоката. "Чёрный жемчуг"
+    private final By blackScooterInputLocator = By.id("black");
+    // Цвет самоката. "серая безысходность"
+    private final By greyScooterInputLocator = By.id("grey");
+    // Комментарий для курьера
+    private final By comment4CourierInputLocator = By.xpath(".//input[@placeholder='Комментарий для курьера']");
+    // Кнопка "Заказать"
+    private final By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+
 
     public OrderForm(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void fillOrderForm(String name, String lastName, String address, String metro, String phone) {
+    public void fillOrderFirstForm(String name, String lastName, String address, String metro, String phone) {
         driver.findElement(nameInputLocator).sendKeys(name);
         driver.findElement(lastNameInputLocator).sendKeys(lastName);
         driver.findElement(addressInputLocator).sendKeys(address);
-        WebElement webElement = driver.findElement(metroInputLocator);
-        webElement.click();
-        webElement.sendKeys(metro);
-        Actions keyDown = new Actions(driver);
-        keyDown.sendKeys(Keys.DOWN).perform();
-        new WebDriverWait(driver, Duration.ofSeconds(5));
-        keyDown.sendKeys(Keys.ENTER).perform();
-        new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        // Заполняем трёхнутое поле Метро, которое почему-то не Select. Видимо красота требует жертв.
+        WebElement metroInput = driver.findElement(metroInputLocator);
+        metroInput.click();
+        metroInput.sendKeys(metro);
+        Actions keyAction = new Actions(driver);
+        keyAction.sendKeys(Keys.DOWN).perform();
+        keyAction.sendKeys(Keys.ENTER).perform();
+
         driver.findElement(phoneInputLocator).sendKeys(phone);
     }
 
-    public void nextBtnClick() {
+    public void clickNextBtnOnFirstOrderForm() {
         WebElement nextBtn = driver.findElement(nextBtnLocator);
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", nextBtn);
+        scrollToElement(nextBtn);
         nextBtn.click();
     }
+
+    public void fillOrderSecondForm(String deliveryDate) {
+        driver.findElement(deliveryDateInputLocator).sendKeys(deliveryDate);
+        Actions keyAction = new Actions(driver);
+        keyAction.sendKeys(Keys.ENTER).perform();
+    }
+
+    // Можно в super вынести
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+    }
 }
+

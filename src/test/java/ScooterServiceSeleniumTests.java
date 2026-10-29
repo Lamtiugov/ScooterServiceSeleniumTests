@@ -62,8 +62,10 @@ public class ScooterServiceSeleniumTests {
         mainPage.waitForLoadOrderForm();
 
         OrderForm orderForm = new OrderForm(driver);
-        orderForm.fillOrderForm("Евгений", "Ламтюгов", "Долгопрудный Дирижабельная 11 кв 15", "Чистрые пруды", "89037840019");
-        orderForm.nextBtnClick();
+        orderForm.fillOrderFirstForm("Евгений", "Ламтюгов", "Долгопрудный Дирижабельная 11 кв 15", "Чистрые пруды", "89037840019");
+        orderForm.clickNextBtnOnFirstOrderForm();
+
+        orderForm.fillOrderSecondForm("31.10.2026");
     }
 
     @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")
