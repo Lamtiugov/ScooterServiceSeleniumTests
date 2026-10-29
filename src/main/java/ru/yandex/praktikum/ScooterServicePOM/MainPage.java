@@ -20,13 +20,10 @@ public class MainPage {
 
     private final By headTitleLocator = By.xpath(".//div[@class='Header_Disclaimer__3VEni']");
     private final By listOfImportantThingsLocator = By.cssSelector(".accordion__item");
-
-    private Map<String, String> listOfImportantThings;
+    private final By orderScooterBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
-
-        listOfImportantThings = new HashMap<>();
     }
 
     public void open() {
@@ -40,18 +37,20 @@ public class MainPage {
         return driver.findElements(listOfImportantThingsLocator).size();
     }
 
-    @Description("Возвращает врос-ответ из списка О важном")
+    @Description("Возвращает вопрос-ответ из списка О важном")
     public List<String> getListOfImportantThingsItemTexts(String listItemQuestionIDLocator) {
         WebElement question = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.id(listItemQuestionIDLocator)));
 
         scrollToElement(question);
 
+        // Element <div id="accordion__heading-5" class="accordion__button"> is not clickable at point (1035,343) because another element <img src="/assets/scooter.png"> obscures it
+        // При этом isDisplayed == true
         System.out.println(question.isDisplayed()); // Не ясно, толи elementToBeClickable не срабатывает, толи скролл
 
         question.click();
         String answer = driver.findElement(
-                By.xpath(".//div[@aria-labelledby=\"" + listItemQuestionIDLocator + "\"]/p"))
+                By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocator + "']/p"))
                 .getText();
         return List.of(question.getText(), answer);
     }
