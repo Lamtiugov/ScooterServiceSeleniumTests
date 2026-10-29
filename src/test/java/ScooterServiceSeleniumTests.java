@@ -1,35 +1,21 @@
 
+import jdk.jfr.Description;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
 
-import java.awt.*;
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Stream;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.stream.Stream;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ScooterServiceSeleniumTests {
     private WebDriver driver;
@@ -42,18 +28,29 @@ public class ScooterServiceSeleniumTests {
         driver = new FirefoxDriver(options);
     }
 
-    @ParameterizedTest
-    @MethodSource("contentOfImportantListOfThings")
-    public void contentOfImportantListOfThingsDoesNotChanged(String listItemQuestionLocator, List<String> expected) throws InterruptedException {
+    @Description("Во время написания теста длина списка О важном была 8")
+    @Test
+    public void listOfImportantThingsSizeIsNotChanged() {
         MainPage mainPage = new MainPage(driver);
+        mainPage.open();
 
+        assertEquals(8, mainPage.getListOfImportantThingsSize(),
+                "Длина списка о Важном изменилась. Ожидается 8.");
+    }
+
+    @Description("Раздел «Вопросы о важном». " +
+            "Когда нажимаешь на стрелочку, открывается соответствующий текст.")
+    @ParameterizedTest
+    @MethodSource("contentOfListOfImportantThings")
+    public void contentOfListOfImportantThingsIsNotChanged(String listItemQuestionLocator, List<String> expected) throws InterruptedException {
+        MainPage mainPage = new MainPage(driver);
         mainPage.open();
 
         List<String> actualResult = mainPage.getListOfImportantThingsItemTexts(listItemQuestionLocator);
         assertEquals(expected, actualResult, "Текст вопроса или ответа поменялся");
     }
 
-    static Stream<Arguments> contentOfImportantListOfThings() {
+    static Stream<Arguments> contentOfListOfImportantThings() {
         return Stream.of(
                 Arguments.of("accordion__heading-0",
                         List.of(
