@@ -12,6 +12,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
+import ru.yandex.praktikum.ScooterServicePOM.OrderForm;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -24,8 +25,10 @@ public class ScooterServiceSeleniumTests {
     public void setUp() {
         //driver = new ChromeDriver(); // Не заработал "Unable to find an exact match for CDP version 156"
         FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
+        //options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
         driver = new FirefoxDriver(options);
+        driver.manage().window().maximize();
+        //driver = new FirefoxDriver();
     }
 
     @Description("Во время написания теста длина списка О важном была 8")
@@ -35,7 +38,7 @@ public class ScooterServiceSeleniumTests {
         mainPage.open();
 
         assertEquals(8, mainPage.getListOfImportantThingsSize(),
-                "Длина списка о Важном изменилась. Ожидается 8.");
+                "Длина списка о Важном изменилась. Ожидается 8 элементов.");
     }
 
     @Description("Раздел «Вопросы о важном». " +
@@ -48,6 +51,19 @@ public class ScooterServiceSeleniumTests {
 
         List<String> actualResult = mainPage.getListOfImportantThingsItemTexts(listItemQuestionLocator);
         assertEquals(expected, actualResult, "Текст вопроса или ответа поменялся");
+    }
+
+    @Test
+    public void orderScooter() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+
+        mainPage.clickOrderBtn();
+        mainPage.waitForLoadOrderForm();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.fillOrderForm("Евгений", "Ламтюгов", "Долгопрудный Дирижабельная 11 кв 15", "Чистрые пруды", "89037840019");
+        orderForm.nextBtnClick();
     }
 
     @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")
@@ -99,10 +115,10 @@ public class ScooterServiceSeleniumTests {
     @AfterEach
     public void  tearDown() {
         if (driver != null) {
-            driver.quit();
+            //driver.quit();
         }
         else {
-            System.out.println("Бразер почему-то закрыт.");
+            System.out.println("Браузер почему-то закрыт.");
         }
     }
 }

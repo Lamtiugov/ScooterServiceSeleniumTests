@@ -26,7 +26,7 @@ public class MainPage {
     private final By listOfImportantThingsLocator = By.cssSelector(".accordion__item");
 
     // Кнопка "Заказать"
-    private final By orderScooterBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
+    private final By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
 
     // Форма заказа самоката
     private  final By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
@@ -71,12 +71,14 @@ public class MainPage {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
     }
 
+    public void clickOrderBtn() {
+        driver.findElement(orderBtnLocator).click();
+    }
+
     // метод ожидания прогрузки формы заказа
     public void waitForLoadOrderForm() {
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(
-                driver -> (driver.findElement(orderFormLocator).getText() != null
-                && !driver.findElement(orderFormLocator).getText().isEmpty()
-        ));
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderFormLocator));
     }
 
 }

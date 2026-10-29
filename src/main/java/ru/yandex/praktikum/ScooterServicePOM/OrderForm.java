@@ -1,7 +1,11 @@
 package ru.yandex.praktikum.ScooterServicePOM;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class OrderForm {
 
@@ -18,8 +22,8 @@ public class OrderForm {
     // Поле "Телефон"
     private final By phoneInputLocator = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
 
-    // Кнопка "Заказать"
-    private final By orderScooterBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
+    // Кнопка "Далее"
+    private final By nextBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
     public OrderForm(WebDriver driver) {
         this.driver = driver;
@@ -29,11 +33,20 @@ public class OrderForm {
         driver.findElement(nameInputLocator).sendKeys(name);
         driver.findElement(lastNameInputLocator).sendKeys(lastName);
         driver.findElement(addressInputLocator).sendKeys(address);
-        driver.findElement(metroInputLocator).sendKeys(metro);
+        WebElement webElement = driver.findElement(metroInputLocator);
+        webElement.click();
+        webElement.sendKeys(metro);
+        Actions keyDown = new Actions(driver);
+        keyDown.sendKeys(Keys.DOWN).perform();
+        new WebDriverWait(driver, Duration.ofSeconds(5));
+        keyDown.sendKeys(Keys.ENTER).perform();
+        new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.findElement(phoneInputLocator).sendKeys(phone);
     }
 
-    public void orderBtnClick() {
-
+    public void nextBtnClick() {
+        WebElement nextBtn = driver.findElement(nextBtnLocator);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", nextBtn);
+        nextBtn.click();
     }
 }
