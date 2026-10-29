@@ -50,6 +50,7 @@ public class ScooterServiceSeleniumTests {
         assertEquals(expected, actualResult, "Текст вопроса или ответа поменялся");
     }
 
+    @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")
     static Stream<Arguments> contentOfListOfImportantThings() {
         return Stream.of(
                 Arguments.of("accordion__heading-0",
