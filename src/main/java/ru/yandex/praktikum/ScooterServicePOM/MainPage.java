@@ -12,22 +12,31 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainPage {
     private final WebDriver driver;
 
     private final String url = "https://qa-scooter.education-services.ru/";
 
+    // Заголовок страницы
     private final By headTitleLocator = By.xpath(".//div[@class='Header_Disclaimer__3VEni']");
+
+    // Элемент списока "О Важном"
     private final By listOfImportantThingsLocator = By.cssSelector(".accordion__item");
+
+    // Кнопка "Заказать"
     private final By orderScooterBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
+
+    // Форма заказа самоката
+    private  final By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void open() {
-        driver.get(this.url);
+        driver.get(url);
 
         new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.visibilityOfElementLocated(headTitleLocator));
@@ -38,9 +47,12 @@ public class MainPage {
     }
 
     @Description("Возвращает вопрос-ответ из списка О важном")
-    public List<String> getListOfImportantThingsItemTexts(String listItemQuestionIDLocator) {
+    public List<String> getListOfImportantThingsItemTexts(String listItemQuestionIDLocatorString) {
+        By listItemQuestionIDLocator = By.id(listItemQuestionIDLocatorString);
         WebElement question = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.id(listItemQuestionIDLocator)));
+                //.until(ExpectedConditions.elementToBeClickable(listItemQuestionIDLocator)
+                .until(ExpectedConditions.visibilityOfElementLocated(listItemQuestionIDLocator));
+
 
         scrollToElement(question);
 
@@ -50,13 +62,21 @@ public class MainPage {
 
         question.click();
         String answer = driver.findElement(
-                By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocator + "']/p"))
+                By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocatorString + "']/p"))
                 .getText();
         return List.of(question.getText(), answer);
     }
 
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
-        new WebDriverWait(driver, Duration.ofSeconds(2));
     }
+
+    // метод ожидания прогрузки формы заказа
+    public void waitForLoadOrderForm() {
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(
+                driver -> (driver.findElement(orderFormLocator).getText() != null
+                && !driver.findElement(orderFormLocator).getText().isEmpty()
+        ));
+    }
+
 }
