@@ -15,21 +15,21 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainPage {
-    private final WebDriver driver;
+    private WebDriver driver;
 
-    private final String url = "https://qa-scooter.education-services.ru/";
+    private String url = "https://qa-scooter.education-services.ru/";
 
     // Заголовок страницы
-    private final By headTitleLocator = By.xpath(".//div[@class='Header_Disclaimer__3VEni']");
+    private By headTitleLocator = By.xpath(".//div[@class='Header_Disclaimer__3VEni']");
 
     // Элемент списока "О Важном"
-    private final By listOfImportantThingsLocator = By.cssSelector(".accordion__item");
+    private By listOfImportantThingsLocator = By.cssSelector(".accordion__item");
 
     // Кнопка "Заказать"
-    private final By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
+    private By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
 
     // Форма заказа самоката
-    private  final By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
+    private By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
 
     public MainPage(WebDriver driver) {
         this.driver = driver;

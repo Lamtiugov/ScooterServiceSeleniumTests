@@ -2,6 +2,7 @@ package ru.yandex.praktikum.ScooterServicePOM;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -13,34 +14,39 @@ public class OrderForm {
 
     // Первая форма заказа
     // Поле "Имя"
-    private final By nameInputLocator = By.xpath(".//input[@placeholder='* Имя']");
+    private By nameInputLocator = By.xpath(".//input[@placeholder='* Имя']");
     // Поле "Фамилия"
-    private final By lastNameInputLocator = By.xpath(".//input[@placeholder='* Фамилия']");
+    private By lastNameInputLocator = By.xpath(".//input[@placeholder='* Фамилия']");
     // Поле "Адрес"
-    private final By addressInputLocator = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
+    private By addressInputLocator = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
     // Поле "Станция Метро"
-    private final By metroInputLocator = By.xpath(".//input[@placeholder='* Станция метро']");
+    private By metroInputLocator = By.xpath(".//input[@placeholder='* Станция метро']");
     // Поле "Телефон"
-    private final By phoneInputLocator = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
+    private By phoneInputLocator = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
     // Кнопка "Далее"
-    private final By nextBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private By nextBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
     // Вторая форма заказа
     // Дата доставки
-    private final By deliveryDateInputLocator = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
-    // Поле срок аренды. Стрелка.
-    private final By leaseInputArrowLocator = By.xpath(".//div[@class='Dropdown-arrow-wrapper']");
+    private By deliveryDateInputLocator = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
+    // Поле срок аренды
+    private By leaseDurationLocator = By.className("Dropdown-root");
     // Поле срок аренды. Список значений.
-    private final By listLeasingDurations = By.xpath(".//div[@class='Dropdown-menu']");
+    private By listLeasingDurations = By.className("Dropdown-menu");
     // Цвет самоката. "Чёрный жемчуг"
-    private final By blackScooterInputLocator = By.id("black");
+    private By blackScooterInputLocator = By.id("black");
     // Цвет самоката. "серая безысходность"
-    private final By greyScooterInputLocator = By.id("grey");
+    private By greyScooterInputLocator = By.id("grey");
     // Комментарий для курьера
-    private final By comment4CourierInputLocator = By.xpath(".//input[@placeholder='Комментарий для курьера']");
+    private By comment4CourierInputLocator = By.xpath(".//input[@placeholder='Комментарий для курьера']");
     // Кнопка "Заказать"
-    private final By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
-
+    private By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    // Кнопка подтверждения заказа
+    private By confirmOrderLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Да']");
+    // Сообщение об успешном оформлении заказа
+    private By orderIsConfirmedLocator = By.xpath(".//div[@class='Order_ModalHeader__3FDaJ' and starts-with(text(), 'Заказ оформлен')]");
+    // Кнопка посмотреть статус заказа
+    private By showOrderStateBtnLocator = By.xpath("//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Посмотреть статус']");
 
     public OrderForm(WebDriver driver) {
         this.driver = driver;
@@ -68,10 +74,30 @@ public class OrderForm {
         nextBtn.click();
     }
 
-    public void fillOrderSecondForm(String deliveryDate) {
+    public void fillOrderSecondForm(String deliveryDate, String leasingDuration, String scooterColor, String commentText) throws Exception {
         driver.findElement(deliveryDateInputLocator).sendKeys(deliveryDate);
         Actions keyAction = new Actions(driver);
         keyAction.sendKeys(Keys.ENTER).perform();
+
+        driver.findElement(leaseDurationLocator).click();
+        //System.out.println(driver.findElement(leaseDurationLocator).getText());
+        By leasingDurationValueLocator = By.xpath(".//div[@class='Dropdown-option' and text()='" + leasingDuration + "']");
+        WebElement leasingDurationValue  = driver.findElement(leasingDurationValueLocator);
+        scrollToElement(leasingDurationValue);
+        leasingDurationValue.click();
+
+        if (scooterColor.equals("black")) {
+            driver.findElement(blackScooterInputLocator).click();
+        } else if (scooterColor.equals("grey")) {
+            driver.findElement(greyScooterInputLocator).click();
+        } else {
+            throw new Exception("Цвет " + scooterColor + " не поддержан");
+        }
+
+        driver.findElement(comment4CourierInputLocator).sendKeys(commentText);
+
+        driver.findElement(orderBtnLocator).click();
+        driver.findElement(confirmOrderLocator).click();
     }
 
     // Можно в super вынести

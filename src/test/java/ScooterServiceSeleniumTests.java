@@ -13,6 +13,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
 import ru.yandex.praktikum.ScooterServicePOM.OrderForm;
+import ru.yandex.praktikum.ScooterServicePOM.constants.LeasingDuration;
+import ru.yandex.praktikum.ScooterServicePOM.constants.ScooterColor;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -54,7 +56,7 @@ public class ScooterServiceSeleniumTests {
     }
 
     @Test
-    public void orderScooter() {
+    public void orderScooter() throws Exception {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
 
@@ -62,10 +64,11 @@ public class ScooterServiceSeleniumTests {
         mainPage.waitForLoadOrderForm();
 
         OrderForm orderForm = new OrderForm(driver);
-        orderForm.fillOrderFirstForm("Евгений", "Ламтюгов", "Долгопрудный Дирижабельная 11 кв 15", "Чистрые пруды", "89037840019");
+        orderForm.fillOrderFirstForm("Евгений", "Ламтюгов",
+                "Долгопрудный Дирижабельная 11 кв 15", "Чистрые пруды", "89037840019");
         orderForm.clickNextBtnOnFirstOrderForm();
 
-        orderForm.fillOrderSecondForm("31.10.2026");
+        orderForm.fillOrderSecondForm("31.10.2026", LeasingDuration.SEVEN_DAYS.getValue(), ScooterColor.BLACK.getValue(), "Позвонить заранее");
     }
 
     @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")
