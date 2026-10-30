@@ -76,22 +76,28 @@ public class OrderForm {
     }
 
     public void fillOrderSecondForm(String deliveryDate, String leasingDuration, String scooterColor, String commentText) {
-        driver.findElement(deliveryDateInputLocator).sendKeys(deliveryDate);
-        Actions keyAction = new Actions(driver);
-        keyAction.sendKeys(Keys.ENTER).perform();
 
-        driver.findElement(leaseDurationLocator).click();
-        //System.out.println(driver.findElement(leaseDurationLocator).getText());
-        By leasingDurationValueLocator = By.xpath(".//div[@class='Dropdown-option' and text()='" + leasingDuration + "']");
-        WebElement leasingDurationValue  = driver.findElement(leasingDurationValueLocator);
-        scrollToElement(leasingDurationValue);
-        leasingDurationValue.click();
+        if (!deliveryDate.isEmpty()) {
+            driver.findElement(deliveryDateInputLocator).sendKeys(deliveryDate);
+            Actions keyAction = new Actions(driver);
+            keyAction.sendKeys(Keys.ENTER).perform();
+
+            driver.findElement(leaseDurationLocator).click();
+
+
+            By leasingDurationValueLocator = By.xpath(".//div[@class='Dropdown-option' and text()='" + leasingDuration + "']");
+            WebElement leasingDurationValue = driver.findElement(leasingDurationValueLocator);
+            scrollToElement(leasingDurationValue);
+            leasingDurationValue.click();
+        }
 
         if (scooterColor.equals("black")) {
             driver.findElement(blackScooterInputLocator).click();
         } else if (scooterColor.equals("grey")) {
             driver.findElement(greyScooterInputLocator).click();
         }
+
+        driver.findElement(comment4CourierInputLocator).sendKeys(commentText);
     }
 
     public void clickOrderBtn() {
@@ -104,6 +110,8 @@ public class OrderForm {
             this.isOrderCreated = true;
         }
     }
+
+
 
     public boolean isOrderCreated() {
         return isOrderCreated;

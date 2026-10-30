@@ -15,8 +15,7 @@ import ru.yandex.praktikum.ScooterServicePOM.constants.ScooterColor;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderFormTests {
     private WebDriver driver;
@@ -61,6 +60,26 @@ public class OrderFormTests {
         orderForm.clickConfirmOrderBtn();
 
         assertTrue(orderForm.isOrderCreated(), "Заказ с правильными полями не получилось создать");
+    }
+
+    @Description("Негативный сценарий для пустого поля Дата доставки")
+    @Test
+    public void emptyDateDoesNotAllowToMakeOrder() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+
+        mainPage.clickOrderBtn();
+        mainPage.waitForLoadOrderForm();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.fillOrderFirstForm("Евгений", "Ламтюгов", "Долгопрудный Дирижабельная 11 кв 15",
+                "Чистрые пруды", "89037840019");
+        orderForm.clickNextBtnOnFirstOrderForm();
+
+        orderForm.fillOrderSecondForm("", LeasingDuration.SEVEN_DAYS.getValue(), ScooterColor.BLACK.getValue(), "Позвонить заранее");
+        orderForm.clickOrderBtn();
+
+        assertFalse(orderForm.isOrderCreated(), "Заказ с пустым полем даты доставки получилось создать");
     }
 
     @Description("Значения полей для успешного заказа")
