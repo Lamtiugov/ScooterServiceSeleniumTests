@@ -11,6 +11,7 @@ import java.time.Duration;
 public class OrderForm {
 
     private WebDriver driver;
+    private boolean isOrderCreated;
 
     // Первая форма заказа
     // Поле "Имя"
@@ -74,7 +75,7 @@ public class OrderForm {
         nextBtn.click();
     }
 
-    public void fillOrderSecondForm(String deliveryDate, String leasingDuration, String scooterColor, String commentText) throws Exception {
+    public void fillOrderSecondForm(String deliveryDate, String leasingDuration, String scooterColor, String commentText) {
         driver.findElement(deliveryDateInputLocator).sendKeys(deliveryDate);
         Actions keyAction = new Actions(driver);
         keyAction.sendKeys(Keys.ENTER).perform();
@@ -90,17 +91,25 @@ public class OrderForm {
             driver.findElement(blackScooterInputLocator).click();
         } else if (scooterColor.equals("grey")) {
             driver.findElement(greyScooterInputLocator).click();
-        } else {
-            throw new Exception("Цвет " + scooterColor + " не поддержан");
         }
-
-        driver.findElement(comment4CourierInputLocator).sendKeys(commentText);
-
-        driver.findElement(orderBtnLocator).click();
-        driver.findElement(confirmOrderLocator).click();
     }
 
-    // Можно в super вынести
+    public void clickOrderBtn() {
+        driver.findElement(orderBtnLocator).click();
+    }
+
+    public void clickConfirmOrderBtn() {
+        driver.findElement(confirmOrderLocator).click();
+        if (driver.findElement(orderIsConfirmedLocator).isEnabled()) {
+            this.isOrderCreated = true;
+        }
+    }
+
+    public boolean isOrderCreated() {
+        return isOrderCreated;
+    }
+
+    // Можно в super вынести наверное
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
     }
