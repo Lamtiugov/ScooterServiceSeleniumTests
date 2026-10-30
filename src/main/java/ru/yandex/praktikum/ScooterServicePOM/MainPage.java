@@ -48,27 +48,17 @@ public class MainPage {
 
     @Description("Возвращает вопрос-ответ из списка О важном")
     public List<String> getListOfImportantThingsItemTexts(String listItemQuestionIDLocatorString) {
-        By listItemQuestionIDLocator = By.id(listItemQuestionIDLocatorString);
-        WebElement question = new WebDriverWait(driver, Duration.ofSeconds(10))
-                //.until(ExpectedConditions.elementToBeClickable(listItemQuestionIDLocator)
-                .until(ExpectedConditions.visibilityOfElementLocated(listItemQuestionIDLocator));
-
+        By listItemQuestionLocator = By.id(listItemQuestionIDLocatorString);
+        WebElement question = new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.elementToBeClickable(listItemQuestionLocator));
 
         scrollToElement(question);
-
-        // Element <div id="accordion__heading-5" class="accordion__button"> is not clickable at point (1035,343) because another element <img src="/assets/scooter.png"> obscures it
-        // При этом isDisplayed == true
-        System.out.println(question.isDisplayed()); // Не ясно, толи elementToBeClickable не срабатывает, толи скролл
-
         question.click();
-        String answer = driver.findElement(
-                By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocatorString + "']/p"))
-                .getText();
-        return List.of(question.getText(), answer);
-    }
 
-    private void scrollToElement(WebElement element) {
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+        By answerLocator = By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocatorString + "']/p");
+        WebElement answer = driver.findElement(answerLocator);
+
+        return List.of(question.getText(), answer.getText());
     }
 
     public void clickOrderBtn() {
@@ -81,4 +71,7 @@ public class MainPage {
                 .until(ExpectedConditions.visibilityOfElementLocated(orderFormLocator));
     }
 
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+    }
 }

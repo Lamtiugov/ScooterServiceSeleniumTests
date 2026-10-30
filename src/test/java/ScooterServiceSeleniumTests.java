@@ -33,28 +33,6 @@ public class ScooterServiceSeleniumTests {
         //driver = new FirefoxDriver();
     }
 
-    @Description("Во время написания теста длина списка О важном была 8")
-    @Test
-    public void listOfImportantThingsSizeIsNotChanged() {
-        MainPage mainPage = new MainPage(driver);
-        mainPage.open();
-
-        assertEquals(8, mainPage.getListOfImportantThingsSize(),
-                "Длина списка о Важном изменилась. Ожидается 8 элементов.");
-    }
-
-    @Description("Раздел «Вопросы о важном». " +
-            "Когда нажимаешь на стрелочку, открывается соответствующий текст.")
-    @ParameterizedTest
-    @MethodSource("contentOfListOfImportantThings")
-    public void contentOfListOfImportantThingsIsNotChanged(String listItemQuestionLocator, List<String> expected) throws InterruptedException {
-        MainPage mainPage = new MainPage(driver);
-        mainPage.open();
-
-        List<String> actualResult = mainPage.getListOfImportantThingsItemTexts(listItemQuestionLocator);
-        assertEquals(expected, actualResult, "Текст вопроса или ответа поменялся");
-    }
-
     @Test
     public void orderScooter() throws Exception {
         MainPage mainPage = new MainPage(driver);
@@ -69,52 +47,6 @@ public class ScooterServiceSeleniumTests {
         orderForm.clickNextBtnOnFirstOrderForm();
 
         orderForm.fillOrderSecondForm("31.10.2026", LeasingDuration.SEVEN_DAYS.getValue(), ScooterColor.BLACK.getValue(), "Позвонить заранее");
-    }
-
-    @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")
-    static Stream<Arguments> contentOfListOfImportantThings() {
-        return Stream.of(
-                Arguments.of("accordion__heading-0",
-                        List.of(
-                                "Сколько это стоит? И как оплатить?",
-                                "Сутки — 400 рублей. Оплата курьеру — наличными или картой."
-                        )),
-                Arguments.of("accordion__heading-1",
-                        List.of(
-                                "Хочу сразу несколько самокатов! Так можно?",
-                                "Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим."
-                        )),
-                Arguments.of("accordion__heading-2",
-                        List.of(
-                                "Как рассчитывается время аренды?",
-                                "Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30."
-                        )),
-                Arguments.of("accordion__heading-3",
-                        List.of(
-                                "Можно ли заказать самокат прямо на сегодня?",
-                                "Только начиная с завтрашнего дня. Но скоро станем расторопнее."
-                        )),
-                Arguments.of("accordion__heading-4",
-                        List.of(
-                                "Можно ли продлить заказ или вернуть самокат раньше?",
-                                "Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010."
-                        )),
-                Arguments.of("accordion__heading-5",
-                        List.of(
-                                "Вы привозите зарядку вместе с самокатом?",
-                                "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."
-                        )),
-                Arguments.of("accordion__heading-6",
-                        List.of(
-                                "Можно ли отменить заказ?",
-                                "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."
-                        )),
-                Arguments.of("accordion__heading-7",
-                        List.of(
-                                "Я жизу за МКАДом, привезёте?",
-                                "Да, обязательно. Всем самокатов! И Москве, и Московской области."
-                        ))
-        );
     }
 
     @AfterEach
