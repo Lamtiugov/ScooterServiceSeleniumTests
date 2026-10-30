@@ -31,9 +31,6 @@ public class MainPage {
     // Форма заказа самоката
     private By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
 
-    // Картинка самоката
-    private By scooterImgLocator = By.xpath(".//img[@src='/assets/scooter.png']");
-
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
