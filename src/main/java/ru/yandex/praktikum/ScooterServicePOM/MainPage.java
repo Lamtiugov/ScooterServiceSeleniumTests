@@ -52,13 +52,12 @@ public class MainPage {
     @Description("Возвращает вопрос-ответ из списка О важном")
     public List<String> getListOfImportantThingsItemTexts(String listItemQuestionIDLocatorString) {
         By listItemQuestionLocator = By.id(listItemQuestionIDLocatorString);
-        WebElement question = new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.elementToBeClickable(listItemQuestionLocator));
+        WebElement question = driver.findElement(listItemQuestionLocator);
 
         scrollToElement(question);
-//       WebElement scooterImg = driver.findElement(scooterImgLocator);
-//        System.out.println(scooterImg.findElement(By.xpath("./..")).getTagName());
-//        System.out.println(scooterImg.findElement(By.xpath("./..")).isDisplayed());
+
+        new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.elementToBeClickable(question));
         question.click();
 
         By answerLocator = By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocatorString + "']/p");
@@ -79,6 +78,5 @@ public class MainPage {
 
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
-        new WebDriverWait(driver, Duration.ofNanos(1000));
     }
 }
