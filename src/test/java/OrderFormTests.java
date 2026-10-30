@@ -72,5 +72,4 @@ public class OrderFormTests {
                         "10.11.2026", LeasingDuration.TWO_DAYS.getValue(), ScooterColor.GREY.getValue(), "Звонить с 14:30 до 21:00")
         );
     }
-
 }
