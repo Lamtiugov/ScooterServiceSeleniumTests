@@ -31,6 +31,9 @@ public class MainPage {
     // Форма заказа самоката
     private By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
 
+    // Картинка самоката
+    private By scooterImgLocator = By.xpath(".//img[@src='/assets/scooter.png']");
+
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -53,6 +56,9 @@ public class MainPage {
                 .until(ExpectedConditions.elementToBeClickable(listItemQuestionLocator));
 
         scrollToElement(question);
+//       WebElement scooterImg = driver.findElement(scooterImgLocator);
+//        System.out.println(scooterImg.findElement(By.xpath("./..")).getTagName());
+//        System.out.println(scooterImg.findElement(By.xpath("./..")).isDisplayed());
         question.click();
 
         By answerLocator = By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocatorString + "']/p");
@@ -73,5 +79,6 @@ public class MainPage {
 
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+        new WebDriverWait(driver, Duration.ofNanos(1000));
     }
 }
