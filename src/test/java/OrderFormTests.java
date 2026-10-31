@@ -34,7 +34,7 @@ public class OrderFormTests {
     @AfterEach
     public void  tearDown() {
         if (driver != null) {
-            //driver.quit();
+            driver.quit();
         }
         else {
             System.out.println("Браузер почему-то закрыт.");
