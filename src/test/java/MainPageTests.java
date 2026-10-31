@@ -23,9 +23,9 @@ public class MainPageTests {
     @BeforeEach
     public void setUp() {
         // В FirefoxDriver driver.switchTo().window(handle) выдает "about:blank", поэтому тут ChromeDriver
-        driver = new ChromeDriver();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
     }
 
