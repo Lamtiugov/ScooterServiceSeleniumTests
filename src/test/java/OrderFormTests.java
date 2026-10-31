@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
@@ -23,12 +22,11 @@ public class OrderFormTests {
 
     @BeforeEach
     public void setUp() {
-        //driver = new ChromeDriver(); // Не заработал "Unable to find an exact match for CDP version 156"
+        //ChromeDriver не дает сделать заказ, поэтому тут FirefoxDriver
         FirefoxOptions options = new FirefoxOptions();
-        //options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
         driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
-        //driver = new FirefoxDriver();
     }
 
     @AfterEach

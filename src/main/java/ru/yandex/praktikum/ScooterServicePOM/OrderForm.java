@@ -2,11 +2,6 @@ package ru.yandex.praktikum.ScooterServicePOM;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class OrderForm {
 
@@ -32,8 +27,6 @@ public class OrderForm {
     private By deliveryDateInputLocator = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
     // Поле срок аренды
     private By leaseDurationLocator = By.className("Dropdown-root");
-    // Поле срок аренды. Список значений.
-    private By listLeasingDurations = By.className("Dropdown-menu");
     // Цвет самоката. "Чёрный жемчуг"
     private By blackScooterInputLocator = By.id("black");
     // Цвет самоката. "серая безысходность"
@@ -46,8 +39,6 @@ public class OrderForm {
     private By confirmOrderLocator = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Да']");
     // Сообщение об успешном оформлении заказа
     private By orderIsConfirmedLocator = By.xpath(".//div[@class='Order_ModalHeader__3FDaJ' and starts-with(text(), 'Заказ оформлен')]");
-    // Кнопка посмотреть статус заказа
-    private By showOrderStateBtnLocator = By.xpath("//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Посмотреть статус']");
 
     // Логотип Самоката
     private By scooterLogoLocator = By.className("Header_LogoScooter__3lsAR");

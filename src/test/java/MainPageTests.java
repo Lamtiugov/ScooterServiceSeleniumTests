@@ -6,10 +6,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
 import ru.yandex.praktikum.ScooterServicePOM.OrderStatePage;
 
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MainPageTests {
@@ -27,9 +24,8 @@ public class MainPageTests {
     public void setUp() {
         // В FirefoxDriver driver.switchTo().window(handle) выдает "about:blank", поэтому тут ChromeDriver
         driver = new ChromeDriver();
-        //FirefoxOptions options = new FirefoxOptions();
-        //options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
-        //driver = new FirefoxDriver(options);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
         driver.manage().window().maximize();
     }
 
@@ -57,7 +53,7 @@ public class MainPageTests {
             "Когда нажимаешь на стрелочку, открывается соответствующий текст.")
     @ParameterizedTest
     @MethodSource("contentOfListOfImportantThings")
-    public void contentOfListOfImportantThingsIsNotChanged(String listItemQuestionLocator, List<String> expected) throws InterruptedException {
+    public void contentOfListOfImportantThingsIsNotChanged(String listItemQuestionLocator, List<String> expected) {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
 
@@ -67,7 +63,7 @@ public class MainPageTests {
 
     @Description("Если нажать на логотип Яндекса, в новом окне откроется главная страница Яндекса")
     @Test
-    public void clickOnYandexLogoGoesToYaRu() throws InterruptedException {
+    public void clickOnYandexLogoGoesToYaRu() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
         mainPage.clickYandexLogo();
