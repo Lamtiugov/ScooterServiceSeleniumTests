@@ -34,7 +34,7 @@ public class OrderFormTests {
     @AfterEach
     public void  tearDown() {
         if (driver != null) {
-            driver.quit();
+            //driver.quit();
         }
         else {
             System.out.println("Браузер почему-то закрыт.");
@@ -86,6 +86,58 @@ public class OrderFormTests {
         }
 
         assertFalse(orderForm.isOrderCreated(), "Заказ с пустым полем даты доставки получилось создать");
+    }
+
+    @Description("Проверем, что для пустого поля Имя выдается сообщение 'Введите корректное имя'")
+    @Test
+    public void shouldValidateNameMsgShows() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickOrderBtn();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.clickNextBtnOnFirstOrderForm();
+
+        assertTrue(orderForm.isValidateNameMsgShowed(), "Ожидалось, что покажется сообщени о проверке поля Имя");
+    }
+
+    @Description("Проверем, что для пустого поля Фамили выдается сообщение 'Введите корректную фамилию'")
+    @Test
+    public void shouldValidateSurnameMsgShows() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickOrderBtn();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.clickNextBtnOnFirstOrderForm();
+
+        assertTrue(orderForm.isValidateSurnameMsgShowed(), "Ожидалось, что покажется сообщени о проверке поля Фамилия");
+    }
+
+    @Description("Проверем, что для пустого поля Метро выдается сообщение 'Выберите станцию'")
+    @Test
+    public void shouldValidateMetroMsgShows() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickOrderBtn();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.clickNextBtnOnFirstOrderForm();
+
+        assertTrue(orderForm.isValidateMetroMsgShowed(), "Ожидалось, что покажется сообщени о проверке поля Метро");
+    }
+
+    @Description("Проверем, что для пустого поля Телефон выдается сообщение 'Введите корректный номер'")
+    @Test
+    public void shouldValidatePhoneMsgShows() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickOrderBtn();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.clickNextBtnOnFirstOrderForm();
+
+        assertTrue(orderForm.isValidatePhoneMsgShowed(), "Ожидалось, что покажется сообщени о проверке поля Телефон");
     }
 
     @Description("Если нажать на логотип «Самоката», попадёшь на главную страницу «Самоката»")
