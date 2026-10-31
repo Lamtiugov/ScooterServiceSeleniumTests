@@ -11,14 +11,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
+import ru.yandex.praktikum.ScooterServicePOM.OrderStatePage;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MainPageTests {
     private WebDriver driver;
@@ -36,7 +36,7 @@ public class MainPageTests {
     @AfterEach
     public void  tearDown() {
         if (driver != null) {
-            driver.quit();
+            //driver.quit();
         }
         else {
             System.out.println("Браузер почему-то закрыт.");
@@ -78,6 +78,21 @@ public class MainPageTests {
         driver.switchTo().window(currentHandles.iterator().next());
         // Открывается редирект. Чтобы дождаться именно открытия https://ya.ru/, нужно ставить sleep, мне это не нравится.
         assertTrue(driver.getCurrentUrl().substring(0,14).equals("https://ya.ru/"), "Ожидалось открытие страницы Яндекса");
+    }
+
+    @Description("Если ввести неправильный номер заказа, попадёшь на страницу статуса заказа." +
+            "На ней должно быть написано, что такого заказа нет.")
+    @Test
+    public void enterInvalidOrderNumberResultNotFound() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickOrderStateBtn();
+        mainPage.setOrderNumber("-1");
+        mainPage.clockGoBtn();
+        mainPage.waitForLoadOrderStatePage();
+
+        OrderStatePage orderStatePage = new OrderStatePage(driver);
+        assertFalse(orderStatePage.isValidOrderNumber(), "Заказа с номером -1 не должно быть");
     }
 
     @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")

@@ -31,6 +31,18 @@ public class MainPage {
     // Логотип Яндекса
     private By yandexLogoLocator = By.className("Header_LogoYandex__3TSOI");
 
+    // Кнопка Статус заказа
+    private By orderStateBtnLocator = By.className("Header_Link__1TAG7");
+
+    // Поле номер заказа
+    private By orderNumberInputLocator = By.xpath("//input[@placeholder='Введите номер заказа']");
+
+    // Кнопка Go!
+    private By goBtnLocator = By.xpath("//button[text()='Go!']");
+
+    // Страница статуса заказа
+    private By orderStatePageLocator = By.className("Track_Content__St6Kn");
+
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -78,6 +90,28 @@ public class MainPage {
 
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.numberOfWindowsToBe(2));
+    }
+
+    public void clickOrderStateBtn() {
+        driver.findElement(orderStateBtnLocator).click();
+    }
+
+    public void setOrderNumber(String orderNum) {
+        WebElement orderNumInput = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderNumberInputLocator));
+        orderNumInput.sendKeys(orderNum);
+    }
+
+    public void clockGoBtn() {
+        WebElement goBtn = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(goBtnLocator));
+        goBtn.click();
+    }
+
+    // метод ожидания прогрузки формы заказа
+    public void waitForLoadOrderStatePage() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderStatePageLocator));
     }
 
     public String getUrl() {
