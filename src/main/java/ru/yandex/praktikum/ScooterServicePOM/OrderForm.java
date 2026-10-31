@@ -49,6 +49,9 @@ public class OrderForm {
     // Кнопка посмотреть статус заказа
     private By showOrderStateBtnLocator = By.xpath("//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Посмотреть статус']");
 
+    // Логотип Самоката
+    private By scooterLogoLocator = By.className("Header_LogoScooter__3lsAR");
+
     public OrderForm(WebDriver driver) {
         this.driver = driver;
     }
@@ -113,6 +116,10 @@ public class OrderForm {
 
     public boolean isOrderCreated() {
         return isOrderCreated;
+    }
+
+    public void clickScooterLogoLink() {
+        driver.findElement(scooterLogoLocator).click();
     }
 
     // Можно в super вынести наверное

@@ -87,6 +87,19 @@ public class OrderFormTests {
         assertFalse(orderForm.isOrderCreated(), "Заказ с пустым полем даты доставки получилось создать");
     }
 
+    @Description("Если нажать на логотип «Самоката», попадёшь на главную страницу «Самоката»")
+    @Test
+    public void scooterLogoDoesToMainPage() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickOrderBtn();
+
+        OrderForm orderForm = new OrderForm(driver);
+        orderForm.clickScooterLogoLink();
+
+        assertEquals(mainPage.getUrl(), driver.getCurrentUrl(), "Ожидался переход на главнужю страницу");
+    }
+
     @Description("Значения полей для успешного заказа")
     static Stream<Arguments> validOrderFields() {
         return Stream.of(

@@ -70,6 +70,10 @@ public class MainPage {
                 .until(ExpectedConditions.visibilityOfElementLocated(orderFormLocator));
     }
 
+    public String getUrl() {
+        return url;
+    }
+
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
     }
