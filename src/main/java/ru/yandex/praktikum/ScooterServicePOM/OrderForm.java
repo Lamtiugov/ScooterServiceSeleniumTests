@@ -111,8 +111,6 @@ public class OrderForm {
         }
     }
 
-
-
     public boolean isOrderCreated() {
         return isOrderCreated;
     }

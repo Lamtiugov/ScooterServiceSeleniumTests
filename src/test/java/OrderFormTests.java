@@ -78,6 +78,11 @@ public class OrderFormTests {
 
         orderForm.fillOrderSecondForm("", LeasingDuration.SEVEN_DAYS.getValue(), ScooterColor.BLACK.getValue(), "Позвонить заранее");
         orderForm.clickOrderBtn();
+        try {
+            orderForm.clickConfirmOrderBtn();
+        } catch (Exception e) {
+            // Повторяю полностью позитивный сценарий, поэтому приходится глушить исключение
+        }
 
         assertFalse(orderForm.isOrderCreated(), "Заказ с пустым полем даты доставки получилось создать");
     }
