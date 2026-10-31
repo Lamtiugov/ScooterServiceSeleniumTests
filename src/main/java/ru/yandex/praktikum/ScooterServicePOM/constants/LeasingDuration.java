@@ -14,7 +14,7 @@ public enum LeasingDuration {
 
     private final String value;
 
-    private LeasingDuration(String value) {
+    LeasingDuration(String value) {
         this.value = value;
     }
 
