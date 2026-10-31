@@ -6,24 +6,30 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MainPageTests {
     private WebDriver driver;
 
     @BeforeEach
     public void setUp() {
-        //driver = new ChromeDriver(); // Не заработал "Unable to find an exact match for CDP version 156"
-        FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
-        driver = new FirefoxDriver(options);
+        // В FirefoxDriver driver.switchTo().window(handle) выдает "about:blank", поэтому тут ChromeDriver
+        driver = new ChromeDriver();
+        //FirefoxOptions options = new FirefoxOptions();
+        //options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
+        //driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
     }
 
@@ -57,6 +63,21 @@ public class MainPageTests {
 
         List<String> actualResult = mainPage.getListOfImportantThingsItemTexts(listItemQuestionLocator);
         assertEquals(expected, actualResult, "Текст вопроса или ответа поменялся");
+    }
+
+    @Description("Если нажать на логотип Яндекса, в новом окне откроется главная страница Яндекса")
+    @Test
+    public void clickOnYandexLogoGoesToYaRu() throws InterruptedException {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open();
+        mainPage.clickYandexLogo();
+
+        Set<String> currentHandles = driver.getWindowHandles();
+        currentHandles.remove(driver.getWindowHandle());
+
+        driver.switchTo().window(currentHandles.iterator().next());
+        // Открывается редирект. Чтобы дождаться именно открытия https://ya.ru/, нужно ставить sleep, мне это не нравится.
+        assertTrue(driver.getCurrentUrl().substring(0,14).equals("https://ya.ru/"), "Ожидалось открытие страницы Яндекса");
     }
 
     @Description("Содержимое списка «Вопросы о важном». ID элемента списка. Вопрос - ответ.")
@@ -104,5 +125,4 @@ public class MainPageTests {
                         ))
         );
     }
-
 }

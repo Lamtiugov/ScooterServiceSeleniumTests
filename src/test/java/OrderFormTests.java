@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import ru.yandex.praktikum.ScooterServicePOM.MainPage;
@@ -33,7 +34,7 @@ public class OrderFormTests {
     @AfterEach
     public void  tearDown() {
         if (driver != null) {
-            //driver.quit();
+            driver.quit();
         }
         else {
             System.out.println("Браузер почему-то закрыт.");

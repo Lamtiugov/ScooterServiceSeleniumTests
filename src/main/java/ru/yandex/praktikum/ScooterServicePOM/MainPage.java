@@ -28,6 +28,9 @@ public class MainPage {
     // Форма заказа самоката
     private By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
 
+    // Логотип Яндекса
+    private By yandexLogoLocator = By.className("Header_LogoYandex__3TSOI");
+
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -68,6 +71,13 @@ public class MainPage {
     public void waitForLoadOrderForm() {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(orderFormLocator));
+    }
+
+    public void clickYandexLogo() {
+        driver.findElement(yandexLogoLocator).click();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.numberOfWindowsToBe(2));
     }
 
     public String getUrl() {
