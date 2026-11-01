@@ -15,3 +15,8 @@
 - Если ввести неправильный номер заказа, открывается страница статуса заказа и на ней написано, что такого заказа нет.
 
 ---
+## 👨‍💻 Автор
+
+**Евгений Ламтюгов**
+[GitHub: Lamtiugov](https://github.com/Lamtiugov)  
+[Telegram: @EugeneLamtiugov](https://t.me/EugeneLamtiugov)
