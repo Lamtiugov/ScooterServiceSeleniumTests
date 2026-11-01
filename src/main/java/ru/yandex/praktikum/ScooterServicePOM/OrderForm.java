@@ -87,7 +87,6 @@ public class OrderForm {
 
             driver.findElement(leaseDurationLocator).click();
 
-
             By leasingDurationValueLocator = By.xpath(".//div[@class='Dropdown-option' and text()='" + leasingDuration + "']");
             WebElement leasingDurationValue = driver.findElement(leasingDurationValueLocator);
             scrollToElement(leasingDurationValue);
