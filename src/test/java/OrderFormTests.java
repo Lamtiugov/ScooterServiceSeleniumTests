@@ -13,7 +13,7 @@ import ru.yandex.praktikum.ScooterServicePOM.OrderForm;
 import ru.yandex.praktikum.ScooterServicePOM.constants.LeasingDuration;
 import ru.yandex.praktikum.ScooterServicePOM.constants.ScooterColor;
 
-import java.util.Optional;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,14 +71,13 @@ public class OrderFormTests {
         mainPage.clickOrderBtn();
         mainPage.waitForLoadOrderForm();
 
-        Object[] arguments = validOrderFields().findAny().get().get();
+        String[] arguments = Arrays.asList(validOrderFields().findAny().get().get()).toArray(new String[9]);
 
         OrderForm orderForm = new OrderForm(driver);
-        orderForm.fillOrderFirstForm(arguments[0].toString(), arguments[1].toString(), arguments[2].toString(),
-                arguments[3].toString(), arguments[4].toString());
+        orderForm.fillOrderFirstForm(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
         orderForm.clickNextBtnOnFirstOrderForm();
 
-        orderForm.fillOrderSecondForm("", arguments[6].toString(), arguments[7].toString(), arguments[8].toString());
+        orderForm.fillOrderSecondForm("", arguments[6], arguments[7], arguments[8]);
         orderForm.clickOrderBtn();
         try {
             orderForm.clickConfirmOrderBtn();
