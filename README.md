@@ -17,6 +17,6 @@
 ---
 ## 👨‍💻 Автор
 
-**Евгений Ламтюгов**
+**Евгений Ламтюгов**  
 [GitHub: Lamtiugov](https://github.com/Lamtiugov)  
 [Telegram: @EugeneLamtiugov](https://t.me/EugeneLamtiugov)
