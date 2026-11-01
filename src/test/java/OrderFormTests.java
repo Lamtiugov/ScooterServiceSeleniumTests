@@ -13,6 +13,7 @@ import ru.yandex.praktikum.ScooterServicePOM.OrderForm;
 import ru.yandex.praktikum.ScooterServicePOM.constants.LeasingDuration;
 import ru.yandex.praktikum.ScooterServicePOM.constants.ScooterColor;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,12 +71,14 @@ public class OrderFormTests {
         mainPage.clickOrderBtn();
         mainPage.waitForLoadOrderForm();
 
+        Object[] arguments = validOrderFields().findAny().get().get();
+
         OrderForm orderForm = new OrderForm(driver);
-        orderForm.fillOrderFirstForm("Евгений", "Ламтюгов", "Долгопрудный Дирижабельная 11 кв 15",
-                "Чистрые пруды", "89037840019");
+        orderForm.fillOrderFirstForm(arguments[0].toString(), arguments[1].toString(), arguments[2].toString(),
+                arguments[3].toString(), arguments[4].toString());
         orderForm.clickNextBtnOnFirstOrderForm();
 
-        orderForm.fillOrderSecondForm("", LeasingDuration.SEVEN_DAYS.getValue(), ScooterColor.BLACK.getValue(), "Позвонить заранее");
+        orderForm.fillOrderSecondForm("", arguments[6].toString(), arguments[7].toString(), arguments[8].toString());
         orderForm.clickOrderBtn();
         try {
             orderForm.clickConfirmOrderBtn();

@@ -5,7 +5,8 @@ public enum ScooterColor {
     GREY("grey");
 
     private String value;
-    private ScooterColor(String value){
+
+    ScooterColor(String value){
         this.value = value;
     }
 
