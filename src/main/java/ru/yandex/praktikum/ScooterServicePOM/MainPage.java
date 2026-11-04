@@ -1,0 +1,124 @@
+package ru.yandex.praktikum.ScooterServicePOM;
+
+import jdk.jfr.Description;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
+
+public class MainPage {
+    private WebDriver driver;
+
+    private String url = "https://qa-scooter.education-services.ru/";
+
+    // Заголовок страницы
+    private By headTitleLocator = By.xpath(".//div[@class='Header_Disclaimer__3VEni']");
+
+    // Элемент списока "О Важном"
+    private By listOfImportantThingsLocator = By.cssSelector(".accordion__item");
+
+    // Кнопка "Заказать"
+    private By orderBtnLocator = By.xpath(".//button[@class='Button_Button__ra12g' and text()='Заказать']");
+
+    // Форма заказа самоката
+    private By orderFormLocator = By.xpath(".//div[@class='Order_Content__bmtHS']");
+
+    // Логотип Яндекса
+    private By yandexLogoLocator = By.className("Header_LogoYandex__3TSOI");
+
+    // Кнопка Статус заказа
+    private By orderStateBtnLocator = By.className("Header_Link__1TAG7");
+
+    // Поле номер заказа
+    private By orderNumberInputLocator = By.xpath("//input[@placeholder='Введите номер заказа']");
+
+    // Кнопка Go!
+    private By goBtnLocator = By.xpath("//button[text()='Go!']");
+
+    // Страница статуса заказа
+    private By orderStatePageLocator = By.className("Track_Content__St6Kn");
+
+    public MainPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void open() {
+        driver.get(url);
+
+        new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.visibilityOfElementLocated(headTitleLocator));
+    }
+
+    public int getListOfImportantThingsSize() {
+        return driver.findElements(listOfImportantThingsLocator).size();
+    }
+
+    @Description("Возвращает вопрос-ответ из списка О важном")
+    public List<String> getListOfImportantThingsItemTexts(String listItemQuestionIDLocatorString) {
+        By listItemQuestionLocator = By.id(listItemQuestionIDLocatorString);
+        WebElement question = driver.findElement(listItemQuestionLocator);
+
+        scrollToElement(question);
+
+        new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.elementToBeClickable(question));
+        question.click();
+
+        By answerLocator = By.xpath(".//div[@aria-labelledby='" + listItemQuestionIDLocatorString + "']/p");
+        WebElement answer = driver.findElement(answerLocator);
+
+        return List.of(question.getText(), answer.getText());
+    }
+
+    public void clickOrderBtn() {
+        driver.findElement(orderBtnLocator).click();
+    }
+
+    // метод ожидания прогрузки формы заказа
+    public void waitForLoadOrderForm() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderFormLocator));
+    }
+
+    public void clickYandexLogo() {
+        driver.findElement(yandexLogoLocator).click();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.numberOfWindowsToBe(2));
+    }
+
+    public void clickOrderStateBtn() {
+        driver.findElement(orderStateBtnLocator).click();
+    }
+
+    public void setOrderNumber(String orderNum) {
+        WebElement orderNumInput = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderNumberInputLocator));
+        orderNumInput.sendKeys(orderNum);
+    }
+
+    public void clockGoBtn() {
+        WebElement goBtn = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(goBtnLocator));
+        goBtn.click();
+    }
+
+    // метод ожидания прогрузки формы заказа
+    public void waitForLoadOrderStatePage() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderStatePageLocator));
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+    }
+}
